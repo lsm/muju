@@ -1,4 +1,3 @@
-
 ;
 (function() {
     // regular expression for matching template tags
@@ -23,23 +22,7 @@
      * @constructor
      */
     var Engine = function() {
-        this._t = {
-            'courses': [{
-                "Name": 111,
-                'Intro': 222,
-                'updatable': [{
-                    'Id': 'id',
-                    'OriginalId': 'original id'
-                }]
-            }, {
-                "Name": 333,
-                'Intro': 444,
-                'editable': [{
-                    'Id': 'id2',
-                    'OriginalId': 'original id2'
-                }]
-            }]
-        };
+        this._t = {};
         this._varContent = {};
         this._tags = [];
     };
@@ -81,8 +64,9 @@
                             throw new Error("Unknown template tag type");
                     }
                 }
+
             }
-            return this._content;
+            return this._postParse(this._content);
         },
     
         /**
@@ -220,13 +204,36 @@
             return subject.slice(0, open) + replacement + subject.slice(close + tagLen);
         },
 
+    /**
+     * Post parse prepared segments from one file, remove unassigned.
+     *
+     * @param string $content content need to post parse
+     * @return string
+     */
+    _postParse: function(content)
+    {
+        /*
+        foreach (this._varContent as $tag => $val) {//parsing var
+            $content = $this._replace($tag, $val, $content);
+        }*/
+        for (var key in this._varContent) {
+            var reg = new RegExp('{\\$' + key + '}', 'g');
+            content = content.replace(reg, this._varContent[key]);
+        }
+
+        for(var idx in this._tags) {//replace not assigned
+            content = content.replace(this._tags[idx], '');
+        }
+        return content;
+    },
+
         _varParse: function(segment) {
             if (segment['name'] in this._t) {
-                if (!this._varContent.hasOwnProperty(segment['real_name'])) {
-                    this._varContent[segment['real_name']] = this._t[segment['name']];
+                if (!this._varContent.hasOwnProperty(segment['name'])) {
+                    this._varContent[segment['name']] = this._t[segment['name']];
                 }
             }
-            this._saveTag(segment['real_name']);
+            this._saveTag(segment['name']);
         },
 
         _saveTag: function(tag) {
