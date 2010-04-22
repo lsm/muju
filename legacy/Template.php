@@ -63,7 +63,7 @@ class Muju_Template
      * @var string
      */
     protected $_tplBasePath = '';
-    
+
     /**
      * Share path for template files
      *
@@ -165,14 +165,14 @@ class Muju_Template
     {
         $this->_tplBasePath = $path;
     }
-    
+
     /**
      * Set the shared file path for template
      *
      * @param string $path
      * @return void
      */
-    public function setSharePath($path) 
+    public function setSharePath($path)
     {
         $this->_tplSharePath = $path;
     }
@@ -283,13 +283,13 @@ class Muju_Template
         if (is_string($name)) {
             $this->_c[$name] = 0;
         }
-        
+
         if (is_array($name)) {
             foreach ($name as $n) {
                 $this->_c[$n] = 0;
             }
         }
-        
+
         return $this;
     }
 
@@ -317,7 +317,7 @@ class Muju_Template
             $this->_keySegment = md5($this->getCacheId() . '`!@#segment$%^&');
             return $this;
         }
-        
+
         throw new Muju_View_Exception('Supplied cache id is not a string!');
     }
 
@@ -332,11 +332,11 @@ class Muju_Template
     }
 
     /**
-     * 
+     *
      *
      * @return boolean
      */
-    
+
     /**
      * Determine the parsing file is cached or not.
      *
@@ -361,7 +361,7 @@ class Muju_Template
                     $trigger = $this->_cache->load($triggerKey) == $triggerValue;
                     if (!$trigger) {
                         $this->_cache->save($triggerValue, $triggerKey);
-                        return false;  
+                        return false;
                     }
                 }
             }
@@ -439,7 +439,7 @@ class Muju_Template
                         . $segment['name'] . '.' . $this->_tplSuffix;
                         if (!is_readable($fileToParse)) {
                             $fileToParse = $this->_tplSharePath
-                            . $segment['name'] . '.' . $this->_tplSuffix;    
+                            . $segment['name'] . '.' . $this->_tplSuffix;
                         }
                     } else {
                         $fileToParse = $this->_tplBasePath . $this->_tplScriptPath
@@ -458,7 +458,7 @@ class Muju_Template
             $mainContent = $this->_postParse($mainContent);
         }
 
-        // cache the content if not fetched from cache 
+        // cache the content if not fetched from cache
         if ($this->_cache && $this->_tplScriptName == $file && !$this->_fromCache) {
             $this->_cachePostParse($this->_tplScriptName, $segments, $mainContent);
             $this->_tplScriptName = null;
@@ -537,7 +537,7 @@ class Muju_Template
     {
         $func = trim($func,'<>');
         return is_callable($func) ? $func($text) : $text;
-         
+
     }
 
     /**
