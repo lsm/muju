@@ -75,8 +75,8 @@
          * @returns {Array} array of tags
          */
         _preParse: function(content) {
-            this.tags = content.match(M_ALL);
-            var tags = this.tags;
+            this._tags = content.match(M_ALL);
+            var tags = this._tags;
             if (tags) {
                 var segments = [];
                 for (var i = 0 ; i < tags.length ; i++) {
@@ -127,7 +127,7 @@
             tmp['type'] = T_BLK;
             tmp['keys'] = [];
             tmp['child'] = [];
-            var tags = this.tags;
+            var tags = this._tags;
 
             for (j = offset+1; j < tags.indexOf(closeTag); j++) {
                 if (M_BLK.exec(tags[j])) {
